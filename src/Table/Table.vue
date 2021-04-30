@@ -52,8 +52,8 @@
 
       console.log('beforeBodyDataList', beforeBodyDataList);
 
-      let beforeBodyData = bodyDataMap[idProp];
-      
+      let beforeBodyData = bodyDataMap[row[idProp] + ''];
+
       console.log('beforeBodyData', beforeBodyData);
 
       if(beforeBodyData) {
@@ -84,9 +84,11 @@
   function initialState(table) {
     const bodyDataMap = {};
 
-    table.bodyData.forEach((bd, index) => {
-      bodyDataMap[bd[table.idProp] + ''] = bd;
-    });
+    if(table.bodyData) {
+      table.bodyData.forEach((bd) => {
+        bodyDataMap[bd[table.idProp] + ''] = bd;
+      });
+    }
 
     return {
       bodyHeight: 'auto',
