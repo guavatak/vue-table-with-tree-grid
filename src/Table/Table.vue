@@ -43,12 +43,16 @@
   /* eslint-disable no-underscore-dangle */
   /* eslint-disable no-param-reassign */
 
-  function getBodyData(data, isTreeType, childrenProp, idProp, isFold, level = 1) {
+  function getBodyData(data, beforeBodyDataList, isTreeType, childrenProp, idProp, isFold, level = 1) {
     let bodyData = [];
     data.forEach((row, index) => {
       const children = row[childrenProp];
       const childrenLen = Object.prototype.toString.call(children).slice(8, -1) === 'Array' ? children.length : 0;
-      const beforeBodyData = _.find(this.bodyData, {idProp : row[idProp]});
+      
+      let beforeBodyData;
+      if(beforeBodyDataList) {
+        beforeBodyData = _.find(beforeBodyDataList, {idProp : row[idProp]});
+      }
 
       if(beforeBodyData) {
         bodyData.push(_.merge({}, beforeBodyData, row));
@@ -68,7 +72,7 @@
 
       if (isTreeType) {
         if (childrenLen > 0) {
-          bodyData = bodyData.concat(getBodyData(children, true, childrenProp, idProp, isFold, level + 1));
+          bodyData = bodyData.concat(getBodyData(children, beforeBodyDataList, true, childrenProp, idProp, isFold, level + 1));
         }
       }
     });
@@ -79,7 +83,7 @@
     return {
       bodyHeight: 'auto',
       firstProp: table.columns[0].prop,
-      bodyData: getBodyData(table.data, table.treeType, table.childrenProp, table.idProp, table.isFold),
+      bodyData: getBodyData(table.data, table.bodyData, table.treeType, table.childrenProp, table.idProp, table.isFold),
     };
   }
 
