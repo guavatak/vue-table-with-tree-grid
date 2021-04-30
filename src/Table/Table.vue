@@ -50,8 +50,6 @@
       const children = row[childrenProp];
       const childrenLen = Object.prototype.toString.call(children).slice(8, -1) === 'Array' ? children.length : 0;
 
-      console.log('beforeBodyDataList', beforeBodyDataList);
-
       let beforeBodyData = bodyDataMap[row[idProp] + ''];
 
       console.log('beforeBodyData', beforeBodyData);
