@@ -43,8 +43,7 @@
   /* eslint-disable no-underscore-dangle */
   /* eslint-disable no-param-reassign */
 
-  function getBodyData(data, isTreeType, childrenProp, isFold, level = 1) {
-    let idProp = this.idProp;
+  function getBodyData(data, isTreeType, childrenProp, idProp, isFold, level = 1) {
     let bodyData = [];
     data.forEach((row, index) => {
       const children = row[childrenProp];
@@ -69,7 +68,7 @@
 
       if (isTreeType) {
         if (childrenLen > 0) {
-          bodyData = bodyData.concat(getBodyData(children, true, childrenProp, isFold, level + 1));
+          bodyData = bodyData.concat(getBodyData(children, true, childrenProp, idProp, isFold, level + 1));
         }
       }
     });
@@ -80,7 +79,7 @@
     return {
       bodyHeight: 'auto',
       firstProp: table.columns[0].prop,
-      bodyData: getBodyData(table.data, table.treeType, table.childrenProp, table.isFold),
+      bodyData: getBodyData(table.data, table.treeType, table.childrenProp, table.idProp, table.isFold),
     };
   }
 
