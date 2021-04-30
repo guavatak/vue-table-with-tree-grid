@@ -48,10 +48,13 @@
     data.forEach((row, index) => {
       const children = row[childrenProp];
       const childrenLen = Object.prototype.toString.call(children).slice(8, -1) === 'Array' ? children.length : 0;
-      
+
+      console.log('beforeBodyDataList', beforeBodyDataList);
+
       let beforeBodyData;
       if(beforeBodyDataList) {
         beforeBodyData = _.find(beforeBodyDataList, {idProp : row[idProp]});
+        console.log('beforeBodyData', beforeBodyData);
       }
 
       if(beforeBodyData) {
