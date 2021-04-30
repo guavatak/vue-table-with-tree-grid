@@ -43,21 +43,18 @@
   /* eslint-disable no-underscore-dangle */
   /* eslint-disable no-param-reassign */
 
-  function getBodyData(data, beforeBodyDataList, isTreeType, childrenProp, idProp, isFold, level = 1) {
+  function getBodyData(data, bodyDataMap, isTreeType, childrenProp, idProp, isFold, level = 1) {
     let bodyData = [];
-    console.log('idProp', idProp);
+ 
     data.forEach((row, index) => {
       const children = row[childrenProp];
       const childrenLen = Object.prototype.toString.call(children).slice(8, -1) === 'Array' ? children.length : 0;
 
       console.log('beforeBodyDataList', beforeBodyDataList);
 
-      let beforeBodyData;
-      if(beforeBodyDataList) {
-        beforeBodyData = _.find(beforeBodyDataList, {idProp : row[idProp]});
-        console.log('beforeBodyData', beforeBodyData);
-        console.log('row[idProp]', row[idProp]);
-      }
+      let beforeBodyData = bodyDataMap[idProp];
+      
+      console.log('beforeBodyData', beforeBodyData);
 
       if(beforeBodyData) {
         bodyData.push(_.merge({}, beforeBodyData, row));
@@ -77,7 +74,7 @@
 
       if (isTreeType) {
         if (childrenLen > 0) {
-          bodyData = bodyData.concat(getBodyData(children, beforeBodyDataList, true, childrenProp, idProp, isFold, level + 1));
+          bodyData = bodyData.concat(getBodyData(children, bodyDataMap, true, childrenProp, idProp, isFold, level + 1));
         }
       }
     });
@@ -85,10 +82,16 @@
   }
 
   function initialState(table) {
+    const bodyDataMap = {};
+
+    table.bodyData.forEach((bd, index) => {
+      bodyDataMap[bd[table.idProp] + ''] = bd;
+    });
+
     return {
       bodyHeight: 'auto',
       firstProp: table.columns[0].prop,
-      bodyData: getBodyData(table.data, table.bodyData, table.treeType, table.childrenProp, table.idProp, table.isFold),
+      bodyData: getBodyData(table.data, bodyDataMap, table.treeType, table.childrenProp, table.idProp, table.isFold),
     };
   }
 
