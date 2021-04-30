@@ -44,21 +44,29 @@
   /* eslint-disable no-param-reassign */
 
   function getBodyData(data, isTreeType, childrenProp, isFold, level = 1) {
+    let idProp = this.idProp;
     let bodyData = [];
     data.forEach((row, index) => {
       const children = row[childrenProp];
       const childrenLen = Object.prototype.toString.call(children).slice(8, -1) === 'Array' ? children.length : 0;
-      bodyData.push({
-        _isHover: false,
-        _isExpanded: false,
-        _isChecked: false,
-        _level: level,
-        _isHide: isFold ? level !== 1 : false,
-        _isFold: isFold,
-        _childrenLen: childrenLen,
-        _normalIndex: index + 1,
-        ...row,
-      });
+      const beforeBodyData = _.find(this.bodyData, {idProp : row[idProp]});
+
+      if(beforeBodyData) {
+        bodyData.push(_.merge({}, beforeBodyData, row));
+      }else {
+        bodyData.push({
+          _isHover: false,
+          _isExpanded: false,
+          _isChecked: false,
+          _level: level,
+          _isHide: isFold ? level !== 1 : false,
+          _isFold: isFold,
+          _childrenLen: childrenLen,
+          _normalIndex: index + 1,
+          ...row,
+        });
+      }
+
       if (isTreeType) {
         if (childrenLen > 0) {
           bodyData = bodyData.concat(getBodyData(children, true, childrenProp, isFold, level + 1));
@@ -173,6 +181,10 @@
       childrenProp: {
         type: String,
         default: 'children',
+      },
+      idProp: {
+        type: String,
+        default: 'id',
       },
       isFold: {
         type: Boolean,
