@@ -52,6 +52,7 @@
 
       let beforeBodyData = bodyDataMap[row[idProp] + ''];
 
+console.log('row', row);
       if(beforeBodyData) {
         bodyData.push(_.merge({}, beforeBodyData, row));
       }else {
