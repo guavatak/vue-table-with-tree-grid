@@ -60,7 +60,7 @@
           _isExpanded: false,
           _isChecked: false,
           _level: level,
-          _isHide: level === 1?false:row.parent._isFold,
+          _isHide: level === 1?false:row.parent && row.parent._isFold,
           _isFold: true,
           _childrenLen: childrenLen,
           _normalIndex: index + 1,
