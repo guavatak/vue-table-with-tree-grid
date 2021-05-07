@@ -64,8 +64,8 @@
 
       let beforeBodyData = bodyDataMap[row[idProp] + ''];
 
-      let isHide = !(level === 1);
-      if(!isHide) {
+      let isHide = false;
+      if(level > 1) {
         isHide = hasFoldedParent(parentBody);
       }
 
