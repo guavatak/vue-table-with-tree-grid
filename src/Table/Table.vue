@@ -43,6 +43,18 @@
   /* eslint-disable no-underscore-dangle */
   /* eslint-disable no-param-reassign */
 
+  function hasFoldedParent(pb) {
+    if(pb) {
+      if(pb._isFold) {
+        return true;
+      }else {
+        return hasFoldedParent(pb._parentBody);
+      }
+    }else {
+      return false;
+    }
+  }
+
   function getBodyData(data, bodyDataMap, isTreeType, childrenProp, idProp, isFold, parentBody, level = 1) {
     let bodyData = [];
  
@@ -52,7 +64,12 @@
 
       let beforeBodyData = bodyDataMap[row[idProp] + ''];
 
-console.log('row', row);
+      let isHide = !(level === 1);
+      if(!isHide) {
+        isHide = hasFoldedParent(parentBody);
+      }
+
+
       let currBody = null;
       if(beforeBodyData) {
         currBody = _.merge({}, beforeBodyData, row);
@@ -66,6 +83,7 @@ console.log('row', row);
           _isFold: parentBody?false:isFold,
           _childrenLen: childrenLen,
           _normalIndex: index + 1,
+          _parentBody: parentBody,
           ...row,
         };
       }
