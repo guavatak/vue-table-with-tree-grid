@@ -43,7 +43,7 @@
   /* eslint-disable no-underscore-dangle */
   /* eslint-disable no-param-reassign */
 
-  function getBodyData(data, bodyDataMap, isTreeType, childrenProp, idProp, isFold, level = 1) {
+  function getBodyData(data, bodyDataMap, isTreeType, childrenProp, idProp, isFold, parentBody, level = 1) {
     let bodyData = [];
  
     data.forEach((row, index) => {
@@ -53,25 +53,27 @@
       let beforeBodyData = bodyDataMap[row[idProp] + ''];
 
 console.log('row', row);
+      const currBody = null;
       if(beforeBodyData) {
-        bodyData.push(_.merge({}, beforeBodyData, row));
+        currBody = _.merge({}, beforeBodyData, row);
       }else {
-        bodyData.push({
+        currBody = {
           _isHover: false,
           _isExpanded: false,
           _isChecked: false,
           _level: level,
-          _isHide: level === 1?false:row.parent && row.parent._isFold,
-          _isFold: row.parent?false:isFold,
+          _isHide: level === 1?false:parentBody && parentBody._isFold,
+          _isFold: parentBody?false:isFold,
           _childrenLen: childrenLen,
           _normalIndex: index + 1,
           ...row,
-        });
+        };
       }
+      bodyData.push(currBody);
 
       if (isTreeType) {
         if (childrenLen > 0) {
-          bodyData = bodyData.concat(getBodyData(children, bodyDataMap, true, childrenProp, idProp, isFold, level + 1));
+          bodyData = bodyData.concat(getBodyData(children, bodyDataMap, true, childrenProp, idProp, isFold, currBody, level + 1));
         }
       }
     });
