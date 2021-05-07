@@ -53,7 +53,7 @@
       let beforeBodyData = bodyDataMap[row[idProp] + ''];
 
 console.log('row', row);
-      const currBody = null;
+      let currBody = null;
       if(beforeBodyData) {
         currBody = _.merge({}, beforeBodyData, row);
       }else {
