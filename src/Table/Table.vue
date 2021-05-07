@@ -80,7 +80,7 @@
           _isChecked: false,
           _level: level,
           _isHide: isHide,
-          _isFold: parentBody?false:isFold,
+          _isFold: isFold,
           _childrenLen: childrenLen,
           _normalIndex: index + 1,
           _parentBody: parentBody,
