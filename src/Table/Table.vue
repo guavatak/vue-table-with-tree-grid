@@ -79,7 +79,7 @@
           _isExpanded: false,
           _isChecked: false,
           _level: level,
-          _isHide: level === 1?false:parentBody && parentBody._isFold,
+          _isHide: isHide,
           _isFold: parentBody?false:isFold,
           _childrenLen: childrenLen,
           _normalIndex: index + 1,
